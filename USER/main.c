@@ -1,9 +1,3 @@
-/* LED 
-
-?????LED PA5,
-
-*/
-
 
 #include "stm32f10x.h"
 #define KEY_ON 1
@@ -81,22 +75,19 @@
  int main(void)
  {	
   GPIO_InitTypeDef  GPIO_InitStructure;
- 	
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOC|RCC_APB2Periph_GPIOB, ENABLE);	 //???PA,B,C??????
-
-// ???A?????,	
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_4 | GPIO_Pin_9 | GPIO_Pin_7 | GPIO_Pin_8;//PA.5 - ?????LED;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		  //???????
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		  //IO??????50MHz
-  GPIO_Init(GPIOA, &GPIO_InitStructure);					      //?????څ?????????GPIOA.5
-	 
-	//GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 ;//PA.6 - ?????LED;
-	GPIO_Init(GPIOB, &GPIO_InitStructure);					      //?????څ?????????GPIOA.5
-	 
-	 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 ;//PC.3 - ?????LED;
+ 	// set clock 
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOC|RCC_APB2Periph_GPIOB, ENABLE);
+  // now set PA5--LED on control board, PA6--LED on extend board, PA4--driver right control port 	
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_4 | GPIO_Pin_9 | GPIO_Pin_7 | GPIO_Pin_8;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		  //set output mode
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		  //set IO clock frequency 50MHz
+  GPIO_Init(GPIOA, &GPIO_InitStructure);					      //Init GPIOA output port
+	//GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 ;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+  //set GPIOC PC3 output
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 ;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_Init(GPIOC, &GPIO_InitStructure);					      //?????څ?????????GPIOA.5
+	GPIO_Init(GPIOC, &GPIO_InitStructure);					      
 	 /**
 	 * set btn input
 	 */
@@ -104,7 +95,10 @@
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOC, &GPIO_InitStructure); 
 	 /**
-	 * set find way input
+	 * set find way input 
+   * PA7 right find way result output port
+   * PB0 left  find way result output port
+   * The control board regard PA7 and PB0 as Floating input mode 
 	 **/
 	 GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
 	 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
